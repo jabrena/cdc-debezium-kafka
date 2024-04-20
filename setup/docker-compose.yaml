@@ -1,4 +1,4 @@
-version: '3'
+#version: '3'
 
 volumes:
   mssqldata:
@@ -57,6 +57,15 @@ services:
       - CONFIG_STORAGE_TOPIC=connect_configs
       - OFFSET_STORAGE_TOPIC=connect_offsets
       - STATUS_STORAGE_TOPIC=connect_statuses
+
+  debezium-ui:
+    image: quay.io/debezium/debezium-ui:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      - debezium
+    environment:
+      - KAFKA_CONNECT_URIS=http://debezium:8083
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
